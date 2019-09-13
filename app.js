@@ -31,7 +31,7 @@ mongoose
     "mongodb+srv://adam:GKLCVf35uvgx3Bev@cluster0-p72yj.mongodb.net/tudastar"
   )
   .then(() => {
-    app.listen(3333, () => {
+    app.listen(4001, () => {
       console.log("App runnning");
     });
   })
