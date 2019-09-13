@@ -33,12 +33,8 @@ mongoose
     "mongodb+srv://adam:GKLCVf35uvgx3Bev@cluster0-p72yj.mongodb.net/tudastar"
   )
   .then(() => {
-    https.createServer({
-      key: fs.readFileSync('server.key'),
-      cert: fs.readFileSync('server.cert')
-      }, app)
-        .listen(4001, () => {
-          console.log("App runnning");
+      app.listen(4001, () => {
+      console.log("App runnning");
     });
   })
   .catch(err => {
