@@ -24,13 +24,12 @@ module.exports.singInUser = (req, res, next) => {
               secret,
               { expiresIn: "1h" }
             );
-            res
-              .status(200)
-              .json({
-                token: token,
-                userId: loadedUser._id.toString(),
-                role: loadedUser.role
-              });
+            res.status(200).json({
+              token: token,
+              userId: loadedUser._id.toString(),
+              role: loadedUser.role,
+              image: loadedUser.image
+            });
           } else {
             console.log("not valid pass");
           }

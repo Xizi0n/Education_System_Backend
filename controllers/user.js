@@ -48,8 +48,8 @@ module.exports.getUser = (req, res, next) => {
   console.log("[params.id] ", requestedUserId);
   User.findOne({ _id: requestedUserId }).then(user => {
     if (user) {
-      const { role, email, name } = user;
-      res.status(200).json({ role, email, name });
+      const { role, email, name, department } = user;
+      res.status(200).json({ role, email, name, department });
     } else {
       console.log("No User found");
     }

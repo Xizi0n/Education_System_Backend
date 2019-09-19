@@ -7,6 +7,7 @@ const authRoutes = require("./routes/auth");
 const courseRoutes = require("./routes/courses");
 const userRoutes = require("./routes/users");
 const lessonRoutes = require("./routes/lesson");
+const forumRoutes = require("./routes/forum");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/auth", authRoutes);
 app.use("/course", courseRoutes);
 app.use("/user", userRoutes);
 app.use("/lesson", lessonRoutes);
+app.use("/forum", forumRoutes);
 
 mongoose
   .connect(

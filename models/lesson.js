@@ -16,6 +16,16 @@ const lessonSchema = new Schema(
       type: String,
       required: false
     },
+    files: [
+      {
+        name: {
+          type: String
+        },
+        title: {
+          type: String
+        }
+      }
+    ],
     exercises: [exerciseSchema]
   },
   {
