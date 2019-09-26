@@ -10,7 +10,11 @@ router.post("/topic/add", forumController.addTopic);
 
 router.get("/topic/get-all", forumController.getAllTopics);
 
-router.post("/post/add", forumController.addPost);
+router.get("/topic/get/:id", forumController.getTopic);
+
+router.post("/post/add", isAuth, forumController.addPost);
+
+router.post("/post/delete", forumController.deletePost);
 
 router.get("/post/get/:id", forumController.getPost);
 

@@ -37,16 +37,30 @@ module.exports.getAllTopics = (req, res, next) => {
     .catch(err => next(err));
 };
 
+module.exports.getTopic = (req, res, next) => {
+  const topicId = req.params.id;
+  Topic.findOne({ _id: topicId })
+    .populate("posts")
+    .then(topic => {
+      if (topic) {
+        res.status(200).json(topic);
+      } else {
+        res.status(404);
+      }
+    });
+};
+
 //////////////////////////////////////////////////////
 // Post
 /////////////////////////////////////////////////////
 module.exports.addPost = (req, res, next) => {
-  //TODO userid should come from req.userId
-  const { topicId, postToSave, userId } = req.body;
+  const { topicId, postToSave } = req.body;
+  const userId = req.userId;
   const post = new Post({
     title: postToSave.title,
     author: userId,
-    content: postToSave.content
+    content: postToSave.message,
+    code: postToSave.code || ""
   });
 
   post.save().then(post => {
@@ -73,6 +87,42 @@ module.exports.getPost = (req, res, next) => {
       res.status(200).json(post);
     })
     .catch(err => next(err));
+};
+
+module.exports.deletePost = (req, res, next) => {
+  const { postId } = req.body;
+
+  Post.findOne({ _id: postId }).then(post => {
+    if (post) {
+      if (post.replies.length === 0) {
+        console.log("No replies");
+        post
+          .remove()
+          .then(result => {
+            res.status(200).json({ message: "Succesful delete" });
+          })
+          .catch(err => {
+            next(err);
+          });
+      } else {
+        console.log("replies found");
+        const deletePromises = [];
+        post.replies.forEach(replyId =>
+          deletePromises.push(Reply.findByIdAndDelete(replyId).exec())
+        );
+        const loadedPost = post;
+        Promise.all(deletePromises)
+          .then(sucess => {
+            console.log("all replies deleted");
+            return loadedPost.remove();
+          })
+          .then(sucess => {
+            res.status(200).json({ message: "Succesful delete" });
+          })
+          .catch(err => next(err));
+      }
+    }
+  });
 };
 
 module.exports.addRating = (req, res, next) => {
